@@ -18,9 +18,9 @@ public interface UserService {
 
     UserModel getById ( Long id );
 
-    List<UserModel> getAllByUsers ( String userName );
-
     String getToken ( UserAuthModel userAuthDto );
 
     String createUser ( UserModel userAuthDto );
+
+    List<UserModel> getAllUsers ();
 }
