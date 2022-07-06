@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "subsribers")
+@Table(name = "subscribers")
 @Getter
 @Setter
 @AllArgsConstructor

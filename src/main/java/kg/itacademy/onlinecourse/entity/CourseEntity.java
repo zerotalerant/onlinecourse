@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "subsribers")
+@Table(name = "courses")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,10 +20,10 @@ import javax.persistence.Table;
 public class CourseEntity extends BaseEntity {
 
     @Column(name = "course_name", nullable = false, unique = true)
-    String login;
+    String courseName;
 
     @Column(name = "course_info", nullable = false)
-    Boolean isActive;
+    String courseInfo;
 
 }
 

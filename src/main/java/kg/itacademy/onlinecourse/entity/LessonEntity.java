@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "subsribers")
+@Table(name = "lessons")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,9 +19,9 @@ import javax.persistence.Table;
 public class LessonEntity extends BaseEntity {
 
     @Column(name = "lesson_name", nullable = false, unique = true)
-    String login;
+    String lessonName;
 
     @Column(name = "lesson_info", nullable = false)
-    Boolean isActive;
+    Boolean lessonInfo;
 
 }
