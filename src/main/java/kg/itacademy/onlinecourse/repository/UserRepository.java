@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(nativeQuery = true, value = "select u.* from users u where u.user_name =:findByUserNameAndEMail or u.email =:findByUserNameAndEMail")
     UserEntity findByUserNameAndEMail(String findByUserNameAndEMail);
+
+    UserEntity findByLogin ( String login );
 }

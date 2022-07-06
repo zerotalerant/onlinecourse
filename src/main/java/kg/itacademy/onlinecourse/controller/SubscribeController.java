@@ -51,7 +51,7 @@ public class SubscribeController {
         }
     }
 
-    @GetMapping(path = "/get/allsubscribers")
+    @GetMapping(path = "/get/all-subs")
     public List<SubscribeModel> getAllSubscribers ()
     {
         return subscribeService.getAll ();
