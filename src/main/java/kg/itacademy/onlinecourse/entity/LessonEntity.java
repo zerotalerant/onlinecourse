@@ -3,9 +3,7 @@ package kg.itacademy.onlinecourse.entity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "lessons")
@@ -23,5 +21,9 @@ public class LessonEntity extends BaseEntity {
 
     @Column(name = "lesson_info", nullable = false)
     Boolean lessonInfo;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    CourseEntity course;
 
 }

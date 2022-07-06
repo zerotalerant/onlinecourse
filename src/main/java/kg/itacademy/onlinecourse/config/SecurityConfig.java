@@ -3,7 +3,10 @@ package kg.itacademy.onlinecourse.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 
 @EnableWebSecurity
+@Configuration
+@EnableScheduling
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -47,10 +52,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf ().disable ()
                 .authorizeRequests ()
 
-                .antMatchers ( HttpMethod.GET, "/api/courses/*" ).permitAll ()
-                .antMatchers ( HttpMethod.POST, "/api/lessons/*" ).hasRole ( "Admin" )
-                .antMatchers ( HttpMethod.PUT, "/api/subscribers/*" ).hasRole ( "Admin" )
+                .antMatchers ( HttpMethod.GET, "/api/courses/add" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.GET, "/api/courses/delete/{courseId}" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.GET, "/api/courses/update" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.GET, "/api/courses/get/{courseId}" ).permitAll ()
 
+                .antMatchers ( HttpMethod.POST, "/api/lessons/add" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.POST, "/api/lessons/delete/{lessonId}" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.POST, "/api/lessons/update" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.POST, "/api/lessons/get/{lessonId}" ).permitAll ()
+
+                .antMatchers ( HttpMethod.PUT, "/api/subscribes/add" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.PUT, "/api/subscribes/delete/{subscribeId}" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.PUT, "/api/subscribes/get/all-subs" ).permitAll ()
 
                 .antMatchers ( "/api/user/*" ).permitAll ()
                 .antMatchers ( "/api/role/*" ).permitAll ()
@@ -65,3 +79,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder ();
     }
 }
+

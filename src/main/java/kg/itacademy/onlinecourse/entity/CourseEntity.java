@@ -5,7 +5,10 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -25,5 +28,8 @@ public class CourseEntity extends BaseEntity {
     @Column(name = "course_info", nullable = false)
     String courseInfo;
 
+
+    @OneToMany(mappedBy = "course")
+    List<LessonEntity> lessons;
 }
 
