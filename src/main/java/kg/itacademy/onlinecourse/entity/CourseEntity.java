@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 
 @Entity
@@ -18,12 +19,10 @@ import javax.persistence.Table;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourseEntity extends BaseEntity {
-
     @Column(name = "course_name", nullable = false, unique = true)
-    String login;
+    String courseName;
 
     @Column(name = "course_info", nullable = false)
-    Boolean isActive;
-
+    String courseInfo;
 }
 

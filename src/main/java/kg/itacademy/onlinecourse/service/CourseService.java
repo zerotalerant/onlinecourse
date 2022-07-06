@@ -1,7 +1,7 @@
 package kg.itacademy.onlinecourse.service;
 
-import org.springframework.stereotype.Service;
+import kg.itacademy.onlinecourse.model.CourseModel;
 
-@Service
 public interface CourseService {
+    CourseModel addCourse(CourseModel courseModel);
 }
