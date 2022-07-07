@@ -92,7 +92,7 @@ public class UserController {
     }
 
 
-    @GetMapping(path = "/get/allusers")
+    @GetMapping(path = "/get/all")
     public List<UserModel> getAll ()
     {
         return userService.getAllUsers ();
