@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-    
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -61,23 +61,19 @@ public class UserController {
         }
     }
 
-    //Регистрация пользователя
-    @PostMapping(path = "/create")
-    public ResponseEntity<UserModel> createNewUser ( @RequestBody UserModel userModel )
+    @PostMapping(path = "/sign-in")
+    public String getAuthToken ( @Valid @RequestBody UserAuthModel userAuthDto )
     {
-        UserModel createdUser = userService.createNewUser ( userModel );
-        if ( createdUser.getId () != null )
-        {
-            return ResponseEntity.status ( HttpStatus.CREATED ).body ( createdUser );
-        } else
-        {
-            return ResponseEntity
-                    .status ( HttpStatus.INTERNAL_SERVER_ERROR )
-                    .body ( null );
-        }
+        return userService.getToken ( userAuthDto );
     }
 
-    //Обновление пользователя
+    @PostMapping("/sign-up")
+    public String register ( @RequestBody UserModel userModel )
+    {
+        return userService.createUser ( userModel );
+    }
+
+
     @PutMapping(path = "/update")
     public ResponseEntity<Boolean> updateUser ( @RequestBody UserModel userModel )
     {
@@ -95,32 +91,18 @@ public class UserController {
         }
     }
 
-    //Вытащить всех пользователей
+
     @GetMapping(path = "/get/allusers")
     public List<UserModel> getAll ()
     {
         return userService.getAllUsers ();
     }
 
-    //Авторизация пользователя
+
     @PostMapping(path = "/login")
     public String userLogin ( @ModelAttribute(name = "login") UserModel userModel )
     {
         userService.userLogin ( userModel );
-        return "login";
-    }
-
-    //Авторизация
-    @PostMapping(path = "/sign-in")
-    public String getAuthToken ( @Valid @RequestBody UserAuthModel userAuthDto )
-    {
-        return userService.getToken ( userAuthDto );
-    }
-
-    //Регистрация
-    @PostMapping("/sign-up")
-    public String register ( @RequestBody UserModel userModel )
-    {
-        return String.valueOf ( userService.createNewUser ( userModel ) );
+        return "Successfully logged into the system";
     }
 }

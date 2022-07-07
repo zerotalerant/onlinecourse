@@ -8,19 +8,17 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    UserModel createNewUser ( UserModel userModel );
+    String getToken ( UserAuthModel userAuthDto );
 
-    boolean update ( UserModel userModel );
+    String createUser ( UserModel userAuthDto );
+
+    UserModel update ( UserModel userModel );
 
     UserModel userLogin ( UserModel userModel );
 
     boolean deleteById ( Long id );
 
     UserModel getById ( Long id );
-
-    String getToken ( UserAuthModel userAuthDto );
-
-    String createUser ( UserModel userAuthDto );
 
     List<UserModel> getAllUsers ();
 }

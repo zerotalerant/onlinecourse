@@ -9,7 +9,7 @@ import java.util.List;
 public interface LessonService {
     LessonModel create( LessonModel lessonModel);
 
-    boolean update(LessonModel lessonModel);
+    LessonModel update( LessonModel lessonModel);
 
     boolean deleteById(Long id);
 

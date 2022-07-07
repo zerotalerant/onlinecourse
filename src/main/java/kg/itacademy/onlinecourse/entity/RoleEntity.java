@@ -19,5 +19,5 @@ import javax.persistence.Table;
 public class RoleEntity extends BaseEntity {
 
     @Column(name = "name_role", unique = true, nullable = false)
-    String role;
+    String roleName;
 }
