@@ -14,5 +14,5 @@ public interface SubscribeService {
 
     List<SubscribeModel> getAll ();
 
-
+    SubscribeModel update ( SubscribeModel SubscribeModel );
 }

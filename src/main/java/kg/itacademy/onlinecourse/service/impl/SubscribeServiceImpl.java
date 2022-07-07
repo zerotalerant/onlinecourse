@@ -2,6 +2,7 @@ package kg.itacademy.onlinecourse.service.impl;
 
 import kg.itacademy.onlinecourse.entity.SubscribeEntity;
 import kg.itacademy.onlinecourse.exceptions.FieldCantBeNullException;
+import kg.itacademy.onlinecourse.exceptions.SubscribeNotFoundException;
 import kg.itacademy.onlinecourse.mapper.SubscribeMapper;
 import kg.itacademy.onlinecourse.model.SubscribeModel;
 import kg.itacademy.onlinecourse.repository.SubscribeRepository;
@@ -40,5 +41,20 @@ public class SubscribeServiceImpl implements SubscribeService {
     {
         List<SubscribeEntity> subscribeEntityList = subscribeRepository.findAll ();
         return SubscribeMapper.INSTANCE.toListModel ( subscribeEntityList );
+    }
+
+    @Override
+    public SubscribeModel update ( SubscribeModel subscribeModel )
+    {
+        SubscribeEntity existSubscribeEntity = subscribeRepository.getById ( subscribeModel.getId () );
+        if ( existSubscribeEntity == null )
+        {
+            throw new SubscribeNotFoundException ( "Subscribe not found by id: " + subscribeModel.getId () );
+        }
+
+        SubscribeEntity existSubscribe = subscribeRepository.findById ( subscribeModel.getId () )
+                .orElseThrow ( () -> new SubscribeNotFoundException ( "Subscribe not found by id: " + subscribeModel.getId () ) );
+
+        return SubscribeMapper.INSTANCE.toModel ( existSubscribe );
     }
 }

@@ -1,7 +1,7 @@
 package kg.itacademy.onlinecourse.exceptions;
 
 public class SubscribeNotFoundException extends RuntimeException {
-    SubscribeNotFoundException ( String message )
+    public SubscribeNotFoundException ( String message )
     {
         super ( message );
     }

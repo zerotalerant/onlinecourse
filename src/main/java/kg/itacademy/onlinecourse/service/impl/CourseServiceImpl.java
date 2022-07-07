@@ -16,7 +16,6 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-
     @Override
     public CourseModel create ( CourseModel courseModel )
     {

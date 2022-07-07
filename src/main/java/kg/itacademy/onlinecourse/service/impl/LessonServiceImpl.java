@@ -50,6 +50,7 @@ public class LessonServiceImpl implements LessonService {
     {
         lessonRepository.deleteById ( id );
         return true;
+
     }
 
     @Override
