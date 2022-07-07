@@ -3,6 +3,7 @@ package kg.itacademy.onlinecourse.controller;
 
 import kg.itacademy.onlinecourse.exceptions.CanNotUpdateException;
 import kg.itacademy.onlinecourse.exceptions.CourseNotFoundException;
+import kg.itacademy.onlinecourse.exceptions.LessonNotFoundException;
 import kg.itacademy.onlinecourse.model.LessonModel;
 import kg.itacademy.onlinecourse.repository.LessonRepository;
 import kg.itacademy.onlinecourse.service.LessonService;
@@ -11,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotBlank;
+import java.sql.ResultSet;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -25,7 +30,7 @@ public class LessonController {
     private LessonRepository lessonRepository;
 
     @PostMapping(path = "/add")
-    public ResponseEntity<LessonModel> addCourse ( @RequestBody LessonModel lessonModel )
+    public ResponseEntity<LessonModel> addCourse ( @NotBlank @RequestBody LessonModel lessonModel )
     {
         LessonModel lessonCreated = lessonService.create ( lessonModel );
         if ( lessonCreated.getId () != null )
@@ -38,7 +43,7 @@ public class LessonController {
     }
 
     @DeleteMapping(path = "/delete/{lessonId}")
-    public ResponseEntity<Boolean> deleteLessonById ( @PathVariable("lessonId") Long lessonId )
+    public ResponseEntity<Boolean> deleteLessonById ( @NotBlank @PathVariable("lessonId") Long lessonId )
     {
         try
         {
@@ -51,7 +56,7 @@ public class LessonController {
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<Boolean> updateLesson ( @RequestBody LessonModel lessonModel )
+    public ResponseEntity<Boolean> updateLesson ( @NotBlank @RequestBody LessonModel lessonModel )
     {
         try
         {
@@ -65,7 +70,7 @@ public class LessonController {
     }
 
     @GetMapping(path = "/get/{lessonId}")
-    public ResponseEntity<LessonModel> getLessonById ( @PathVariable("lessonId") Long lessonId )
+    public ResponseEntity<LessonModel> getLessonById ( @NotBlank @PathVariable("lessonId") Long lessonId )
     {
         try
         {
@@ -77,5 +82,17 @@ public class LessonController {
         }
     }
 
+    @GetMapping(path = "/get/all")
+    public ResponseEntity<List<LessonModel>> getAll ()
+    {
+        try
+        {
+            return ResponseEntity.ok ( lessonService.getAll () );
+        } catch (LessonNotFoundException e)
+        {
+            log.error ( e.getMessage (), e );
+            return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).body ( null );
+        }
 
+    }
 }

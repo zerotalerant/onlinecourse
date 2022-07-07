@@ -2,7 +2,9 @@ package kg.itacademy.onlinecourse.controller;
 
 import kg.itacademy.onlinecourse.exceptions.CanNotUpdateException;
 import kg.itacademy.onlinecourse.exceptions.CourseNotFoundException;
+import kg.itacademy.onlinecourse.exceptions.LessonNotFoundException;
 import kg.itacademy.onlinecourse.model.CourseModel;
+import kg.itacademy.onlinecourse.model.LessonModel;
 import kg.itacademy.onlinecourse.repository.CourseRepository;
 import kg.itacademy.onlinecourse.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -24,7 +29,7 @@ public class CourseController {
     private CourseRepository courseRepository;
 
     @PostMapping(path = "/add")
-    public ResponseEntity<CourseModel> addCourse ( @RequestBody CourseModel courseModel )
+    public ResponseEntity<CourseModel> addCourse (@NotBlank @RequestBody CourseModel courseModel)
     {
         CourseModel courseCreated = courseService.create ( courseModel );
         if ( courseCreated.getId () != null )
@@ -37,7 +42,7 @@ public class CourseController {
     }
 
     @DeleteMapping(path = "/delete/{courseId}")
-    public ResponseEntity<Boolean> deleteCourseById ( @PathVariable("courseId") Long courseId )
+    public ResponseEntity<Boolean> deleteCourseById (@NotBlank @PathVariable("courseId") Long courseId )
     {
         try
         {
@@ -50,7 +55,7 @@ public class CourseController {
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<Boolean> updateCourse ( @RequestBody CourseModel courseModel )
+    public ResponseEntity<Boolean> updateCourse (@NotBlank @RequestBody CourseModel courseModel )
     {
         try
         {
@@ -64,7 +69,7 @@ public class CourseController {
     }
 
     @GetMapping(path = "/get/{courseId}")
-    public ResponseEntity<CourseModel> getCourseById ( @PathVariable("courseId") Long courseId )
+    public ResponseEntity<CourseModel> getCourseById (@NotBlank @PathVariable("courseId") Long courseId )
     {
         try
         {
@@ -74,5 +79,19 @@ public class CourseController {
             log.error ( e.getMessage (), e );
             return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).body ( null );
         }
+    }
+
+    @GetMapping(path = "/get/all")
+    public ResponseEntity<List<CourseModel>> getAll ()
+    {
+        try
+        {
+            return ResponseEntity.ok ( courseService.getAll () );
+        } catch (CourseNotFoundException e)
+        {
+            log.error ( e.getMessage (), e );
+            return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).body ( null );
+        }
+
     }
 }

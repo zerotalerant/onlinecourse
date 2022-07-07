@@ -1,5 +1,6 @@
 package kg.itacademy.onlinecourse.controller;
 
+import kg.itacademy.onlinecourse.exceptions.SubscribeNotFoundException;
 import kg.itacademy.onlinecourse.exceptions.SubscriberDoesNotExistException;
 import kg.itacademy.onlinecourse.model.SubscribeModel;
 import kg.itacademy.onlinecourse.repository.SubscribeRepository;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 @RestController
@@ -51,10 +51,17 @@ public class SubscribeController {
         }
     }
 
-    @GetMapping(path = "/get/all-subs")
-    public List<SubscribeModel> getAllSubscribers ()
+    @GetMapping(path = "/get/all")
+    public ResponseEntity<List<SubscribeModel>> getAll ()
     {
-        return subscribeService.getAll ();
-    }
+        try
+        {
+            return ResponseEntity.ok ( subscribeService.getAll () );
+        } catch (SubscribeNotFoundException e)
+        {
+            log.error ( e.getMessage (), e );
+            return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).body ( null );
+        }
 
+    }
 }
