@@ -8,11 +8,12 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@NotNull(message = "Create course model is null")
+@NotNull
 public class CourseModel {
+    @NotNull
     private Long id;
 
-    @NotBlank(message = "course name can't be blank")
+    @NotBlank
     private String courseName;
     private String courseInfo;
 }

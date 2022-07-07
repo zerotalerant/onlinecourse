@@ -2,6 +2,7 @@ package kg.itacademy.onlinecourse.controller;
 
 import kg.itacademy.onlinecourse.model.CourseModel;
 import kg.itacademy.onlinecourse.service.CourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/course")
+@Slf4j
 public class CourseController {
 
     @Autowired
@@ -27,7 +29,31 @@ public class CourseController {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);
         }
+    }
 
+    @PutMapping(path = "/update")
+    public ResponseEntity<Boolean> updateCourse(@RequestBody CourseModel courseModel) {
+        try {
+            courseService.update(courseModel);
+            return ResponseEntity.ok(true);
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
 
+    @GetMapping(path = "/delete/{id}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(courseService.deleteById(id));
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
 }
+
