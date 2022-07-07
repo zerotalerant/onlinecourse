@@ -9,7 +9,7 @@ import java.util.List;
 public interface CourseService {
     CourseModel create ( CourseModel courseModel );
 
-    boolean update ( CourseModel courseModel );
+    CourseModel update ( CourseModel courseModel );
 
     boolean deleteById ( Long id );
 
