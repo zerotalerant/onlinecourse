@@ -7,14 +7,19 @@ import kg.itacademy.onlinecourse.mapper.LessonMapper;
 import kg.itacademy.onlinecourse.model.LessonModel;
 import kg.itacademy.onlinecourse.repository.LessonRepository;
 import kg.itacademy.onlinecourse.service.LessonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class LessonServiceImpl implements LessonService {
 
-    @Autowired
-    private LessonRepository lessonRepository;
+    private final LessonRepository lessonRepository;
+
+    public LessonServiceImpl ( LessonRepository lessonRepository )
+    {
+        this.lessonRepository = lessonRepository;
+    }
 
     @Override
     public LessonModel create ( LessonModel lessonModel )
@@ -42,14 +47,19 @@ public class LessonServiceImpl implements LessonService {
         LessonEntity existLesson = lessonRepository.findById ( lessonModel.getId () )
                 .orElseThrow ( () -> new LessonNotFoundException ( "Lesson not found by id: " + lessonModel.getId () ) );
 
+        existLesson.setLessonName ( lessonModel.getLessonName () );
+        existLesson.setLessonInfo ( Boolean.valueOf ( lessonModel.getLessonInfo () ) );
+
+        existLesson = lessonRepository.save ( existLesson );
+
         return LessonMapper.INSTANCE.toModel ( existLesson );
     }
 
     @Override
-    public boolean deleteById ( Long id )
+    public String deleteById ( Long id )
     {
         lessonRepository.deleteById ( id );
-        return true;
+        return "Lesson successfully deleted!";
 
     }
 
@@ -60,7 +70,6 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow ( () -> new LessonNotFoundException ( "Lesson not found by id: " + id ) );
 
         return LessonMapper.INSTANCE.toModel ( existLesson );
-
     }
 
     @Override

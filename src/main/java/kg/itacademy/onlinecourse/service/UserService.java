@@ -2,11 +2,9 @@ package kg.itacademy.onlinecourse.service;
 
 import kg.itacademy.onlinecourse.model.UserAuthModel;
 import kg.itacademy.onlinecourse.model.UserModel;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface UserService {
     String getToken ( UserAuthModel userAuthDto );
 
@@ -16,7 +14,7 @@ public interface UserService {
 
     UserModel userLogin ( UserModel userModel );
 
-    boolean deleteById ( Long id );
+    String deleteById ( Long id );
 
     UserModel getById ( Long id );
 

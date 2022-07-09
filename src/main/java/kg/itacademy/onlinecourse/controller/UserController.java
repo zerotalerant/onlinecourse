@@ -21,14 +21,19 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UserController ( UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder )
+    {
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping(path = "/get/{userId}")
     public ResponseEntity<UserModel> getUserById ( @PathVariable("userId") Long userId )

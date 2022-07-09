@@ -8,13 +8,20 @@ import kg.itacademy.onlinecourse.model.CourseModel;
 import kg.itacademy.onlinecourse.repository.CourseRepository;
 import kg.itacademy.onlinecourse.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
+
+    public CourseServiceImpl ( CourseRepository courseRepository )
+    {
+        this.courseRepository = courseRepository;
+    }
 
     @Override
     public CourseModel create ( CourseModel courseModel )
@@ -38,15 +45,21 @@ public class CourseServiceImpl implements CourseService {
         CourseEntity existCourse = courseRepository.findById ( courseModel.getId () )
                 .orElseThrow ( () -> new CourseNotFoundException ( "Course not found by id: " + courseModel.getId () ) );
 
+        existCourse.setCourseName ( courseModel.getCourseName () );
+        existCourse.setCourseInfo ( courseModel.getCourseInfo () );
+
+        existCourse = courseRepository.save ( existCourse );
+
         return CourseMapper.INSTANCE.toModel ( existCourse );
     }
 
 
     @Override
-    public boolean deleteById ( Long id )
+    public String deleteById ( Long id )
     {
         courseRepository.deleteById ( id );
-        return true;
+        return "Course successfully deleted!";
+
     }
 
     @Override

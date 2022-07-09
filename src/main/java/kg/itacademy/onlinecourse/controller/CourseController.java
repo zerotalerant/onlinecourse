@@ -2,9 +2,7 @@ package kg.itacademy.onlinecourse.controller;
 
 import kg.itacademy.onlinecourse.exceptions.CanNotUpdateException;
 import kg.itacademy.onlinecourse.exceptions.CourseNotFoundException;
-import kg.itacademy.onlinecourse.exceptions.LessonNotFoundException;
 import kg.itacademy.onlinecourse.model.CourseModel;
-import kg.itacademy.onlinecourse.model.LessonModel;
 import kg.itacademy.onlinecourse.repository.CourseRepository;
 import kg.itacademy.onlinecourse.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +20,20 @@ import java.util.List;
 @Slf4j
 public class CourseController {
 
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
 
     @Autowired
     private CourseRepository courseRepository;
 
+    public CourseController ( CourseService courseService, CourseRepository courseRepository )
+    {
+        this.courseService = courseService;
+        this.courseRepository = courseRepository;
+    }
+
+
     @PostMapping(path = "/add")
-    public ResponseEntity<CourseModel> addCourse (@NotBlank @RequestBody CourseModel courseModel)
+    public ResponseEntity<CourseModel> addCourse ( @NotBlank @RequestBody CourseModel courseModel )
     {
         CourseModel courseCreated = courseService.create ( courseModel );
         if ( courseCreated.getId () != null )
@@ -42,7 +46,7 @@ public class CourseController {
     }
 
     @DeleteMapping(path = "/delete/{courseId}")
-    public ResponseEntity<Boolean> deleteCourseById (@NotBlank @PathVariable("courseId") Long courseId )
+    public ResponseEntity<Boolean> deleteCourseById ( @NotBlank @PathVariable("courseId") Long courseId )
     {
         try
         {
@@ -55,21 +59,21 @@ public class CourseController {
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<Boolean> updateCourse (@NotBlank @RequestBody CourseModel courseModel )
+    public ResponseEntity<Boolean> updateCourse ( @NotBlank @RequestBody CourseModel courseModel )
     {
         try
         {
             courseService.update ( courseModel );
             return ResponseEntity.ok ( true );
         } catch (CanNotUpdateException e)
-        {
+            {
             log.error ( e.getMessage (), e );
             return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).body ( null );
         }
     }
 
     @GetMapping(path = "/get/{courseId}")
-    public ResponseEntity<CourseModel> getCourseById (@NotBlank @PathVariable("courseId") Long courseId )
+    public ResponseEntity<CourseModel> getCourseById ( @NotBlank @PathVariable("courseId") Long courseId )
     {
         try
         {

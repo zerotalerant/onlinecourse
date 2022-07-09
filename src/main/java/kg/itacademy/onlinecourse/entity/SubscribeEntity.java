@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SubscribeEntity extends BaseEntity {
     @Column(name = "user_name", nullable = false, unique = true)
-    String login;
+    String userName;
 
     @Column
     LocalDate expireDate;

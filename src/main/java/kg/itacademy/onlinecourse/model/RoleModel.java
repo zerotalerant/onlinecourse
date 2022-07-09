@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RoleModel {
-    String name;
+    private String roleName;
 }

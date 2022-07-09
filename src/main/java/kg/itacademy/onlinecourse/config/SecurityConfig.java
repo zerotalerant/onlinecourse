@@ -30,10 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     {
         auth.jdbcAuthentication ()
                 .dataSource ( dataSource )
-                .usersByUsernameQuery ( "SELECT t.login, t.password, t.is_active FROM user_airport t WHERE t.login = ?" )
+                .usersByUsernameQuery ( "SELECT t.login, t.password, t.is_active FROM users t WHERE t.login = ?" )
                 .authoritiesByUsernameQuery (
                         "SELECT u.login, r.name_role " +
-                        "FROM users_roles ur " +
+                        "FROM user_roles ur " +
                         "INNER JOIN users u " +
                         "   on ur.user_id = u.id " +
                         "INNER JOIN roles r " +
@@ -52,19 +52,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf ().disable ()
                 .authorizeRequests ()
 
-                .antMatchers ( HttpMethod.GET, "/api/courses/add" ).hasRole ( "Teacher" )
-                .antMatchers ( HttpMethod.GET, "/api/courses/delete/{courseId}" ).hasRole ( "Teacher" )
-                .antMatchers ( HttpMethod.GET, "/api/courses/update" ).hasRole ( "Teacher" )
+                .antMatchers ( HttpMethod.POST, "/api/courses/add" ).permitAll ()
+                .antMatchers ( HttpMethod.DELETE, "/api/courses/delete/{courseId}" ).permitAll ()
+                .antMatchers ( HttpMethod.PUT, "/api/courses/update" ).permitAll ()
                 .antMatchers ( HttpMethod.GET, "/api/courses/get/{courseId}" ).permitAll ()
+                .antMatchers ( HttpMethod.GET, "/api/courses/get/all" ).permitAll ()
 
-                .antMatchers ( HttpMethod.POST, "/api/lessons/add" ).hasRole ( "Teacher" )
-                .antMatchers ( HttpMethod.POST, "/api/lessons/delete/{lessonId}" ).hasRole ( "Teacher" )
-                .antMatchers ( HttpMethod.POST, "/api/lessons/update" ).hasRole ( "Teacher" )
-                .antMatchers ( HttpMethod.POST, "/api/lessons/get/{lessonId}" ).permitAll ()
+                .antMatchers ( HttpMethod.POST, "/api/lessons/add" ).permitAll ()
+                .antMatchers ( HttpMethod.DELETE, "/api/lessons/delete/{lessonId}" ).permitAll ()
+                .antMatchers ( HttpMethod.PUT, "/api/lessons/update" ).permitAll ()
+                .antMatchers ( HttpMethod.GET, "/api/lessons/get/{lessonId}" ).permitAll ()
+                .antMatchers ( HttpMethod.GET, "/api/lessons/get/all" ).permitAll ()
 
-                .antMatchers ( HttpMethod.PUT, "/api/subscribes/add" ).hasRole ( "Teacher" )
-                .antMatchers ( HttpMethod.PUT, "/api/subscribes/delete/{subscribeId}" ).hasRole ( "Teacher" )
-                .antMatchers ( HttpMethod.PUT, "/api/subscribes/get/all-subs" ).permitAll ()
+
+                .antMatchers ( HttpMethod.POST, "/api/subscribes/add" ).permitAll ()
+                .antMatchers ( HttpMethod.DELETE, "/api/subscribes/delete/{subscribeId}" ).permitAll ()
+                .antMatchers ( HttpMethod.GET, "/api/subscribes/get/all" ).permitAll ()
 
                 .antMatchers ( "/api/user/*" ).permitAll ()
                 .antMatchers ( "/api/role/*" ).permitAll ()

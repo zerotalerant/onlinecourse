@@ -7,14 +7,20 @@ import kg.itacademy.onlinecourse.mapper.SubscribeMapper;
 import kg.itacademy.onlinecourse.model.SubscribeModel;
 import kg.itacademy.onlinecourse.repository.SubscribeRepository;
 import kg.itacademy.onlinecourse.service.SubscribeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class SubscribeServiceImpl implements SubscribeService {
 
-    @Autowired
-    private SubscribeRepository subscribeRepository;
+    private final SubscribeRepository subscribeRepository;
+
+    public SubscribeServiceImpl ( SubscribeRepository subscribeRepository )
+    {
+        this.subscribeRepository = subscribeRepository;
+    }
 
 
     @Override
@@ -25,15 +31,16 @@ public class SubscribeServiceImpl implements SubscribeService {
             throw new FieldCantBeNullException ( "Field is null, check one more time" );
         }
         SubscribeEntity subscribeEntity = SubscribeMapper.INSTANCE.toEntity ( subscribeModel );
+        subscribeEntity.setExpireDate ( LocalDate.now ().plusMonths ( 1 ) );
         subscribeEntity = subscribeRepository.save ( subscribeEntity );
         return SubscribeMapper.INSTANCE.toModel ( subscribeEntity );
     }
 
     @Override
-    public boolean deleteById ( Long id )
+    public String deleteById ( Long id )
     {
         subscribeRepository.deleteById ( id );
-        return true;
+        return "Subscriber successfully deleted!";
     }
 
     @Override
@@ -54,6 +61,11 @@ public class SubscribeServiceImpl implements SubscribeService {
 
         SubscribeEntity existSubscribe = subscribeRepository.findById ( subscribeModel.getId () )
                 .orElseThrow ( () -> new SubscribeNotFoundException ( "Subscribe not found by id: " + subscribeModel.getId () ) );
+
+        existSubscribe.setUserName ( subscribeModel.getUserName () );
+        existSubscribe.setExpireDate ( LocalDate.now ().plusMonths ( 1 ) );
+
+        existSubscribe = subscribeRepository.save ( existSubscribe );
 
         return SubscribeMapper.INSTANCE.toModel ( existSubscribe );
     }
